@@ -1,0 +1,230 @@
+temp equ 30h     
+     org 0h 
+     jmp main
+     org 03h
+     temp=#ffh     
+     reti 
+
+
+main setb int0
+     setb ea
+     setb ex0
+     mov p2,#00h
+     mov p1,#ffh
+     clr a
+     mov temp,a
+     mov 20h,#00h  
+     mov 21h,#01h
+     mov 22h,#02h
+     mov 23h,#03h
+     mov 24h,#04h
+     mov 25h,#05h
+     mov 26h,#06h
+
+loop mov p1,#ffh
+     clr p1.7
+     jnb p1.3,nnf
+     jnb p1.2,nnb
+     jnb p1.1,nna
+     jnb p1.0,nn0
+     mov p1,#ffh
+     clr p1.6
+     jnb p1.3,nne
+     jnb p1.2,nn3
+     jnb p1.1,nn2
+     jnb p1.0,nn1
+     mov p1,#ffh
+     clr p1.5
+     jnb p1.3,nnd
+     jnb p1.2,nn6
+     jnb p1.1,nn5
+     jnb p1.0,nn4
+     mov p1,#ffh
+     clr p1.4
+     jnb p1.3,nnc
+     jnb p1.2,nn9
+     jnb p1.1,nn8
+     jnb p1.0,nn7
+     jmp loop
+nn0  jmp n0
+nn1  jmp n1
+nn2  jmp n2
+nn3  jmp n3
+nn4  jmp n4
+nn5  jmp n5
+nn6  jmp n6
+nn7  jmp n7
+nn8  jmp n8
+nn9  jmp n9
+nna  jmp na
+nnb  jmp nb
+nnc  jmp nc
+nnd  jmp nd
+nne  jmp ne
+nnf  jmp nf
+n0   call delay
+wait0 jnb p1.0,wait0
+     call delay
+     mov b,#00h     
+     jmp test
+n1   call delay
+wait1 jnb p1.0,wait1
+     call delay
+     mov b,#01h
+     jmp test 
+n2   call delay
+wait2 jnb p1.1,wait2
+     call delay
+     mov b,#02h
+     jmp test   
+n3   call delay
+wait3 jnb p1.2,wait3
+     call delay
+     mov b,#03h   
+     jmp test
+n4   call delay
+wait4 jnb p1.0,wait4
+     call delay
+     mov b,#04h 
+     jmp test
+n5   call delay
+wait5 jnb p1.1,wait5
+     call delay
+     mov b,#05h
+     jmp test
+n6   call delay
+wait6 jnb p1.2,wait6
+     call delay
+     mov b,#06h
+     jmp test
+n7   call delay
+wait7 jnb p1.0,wait7
+     call delay
+     mov b,#07h
+     jmp test
+n8   call delay
+wait8 jnb p1.1,wait8
+     call delay
+     mov b,#08h
+     jmp test
+n9   call delay
+wait9 jnb p1.2,wait9
+     call delay
+     mov b,#09h
+     jmp test
+na   call delay
+waita jnb p1.1,waita
+     call delay
+     mov b,0ah
+     jmp test 
+nb   call delay
+waitb jnb p1.2,waitb
+     call delay
+     mov b,#0bh
+     jmp test
+
+nc   call delay
+waitc jnb p1.3,waitc
+     call delay
+     clr a     
+     jmp loop
+
+nd   call delay
+waitd jnb p1.3,waitd
+     call delay
+     mov b,#0dh
+     jmp test
+ne   call delay
+waite jnb p1.3,waite
+     call delay
+     mov b,#0eh
+     jmp test
+nf   call delay
+waitf jnb p1.3,waitf
+     call delay
+     mov b,#0fh
+
+test cjne a,#00,a0
+     jmp case0
+a0   cjne a,#01,a1
+     jmp case1
+a1   cjne a,#02,a2
+     jmp case2
+a2   cjne a,#03,a3
+     jmp case3
+a3   cjne a,#04,a4
+     jmp case4
+a4   cjne a,#05,a5
+     jmp case5
+a5   cjne a,#06,qq
+     jmp case6
+qq   jmp loop 
+case0 push a    
+      mov a,20h  
+      cjne a,b,error 
+      pop a
+      inc a
+      jmp loop
+case1 push a
+      mov a,21h
+      cjne a,b,error
+      pop a
+      inc a
+      jmp loop
+case2 push a    
+      mov a,22h  
+      cjne a,b,error 
+      pop a
+      inc a
+      jmp loop
+case3 push a
+      mov a,23h
+      cjne a,b,error
+      pop a
+      inc a
+      jmp loop
+case4 push a    
+      mov a,24h  
+      cjne a,b,error 
+      pop a
+      inc a
+      jmp loop
+case5 push a
+      mov a,25h
+      cjne a,b,error
+      pop a
+      inc a
+      jmp loop
+case6 push a
+      mov a,26h
+      cjne a,b,error
+      pop a
+      clr a
+      cjne temp,#ff,dd
+      jmp change 
+dd    mov p2,#01010101b 
+      jmp loop
+
+error pop a
+      clr a
+      jmp loop
+
+
+change
+
+
+
+
+
+
+
+
+
+
+    
+delay mov r0,#150
+dly2  mov r1,#150
+dly1  djnz r1,dly1
+      djnz r0,dly2
+      ret
+      end 

@@ -1,0 +1,144 @@
+     org 0h
+     mov dptr,#table 
+     clr a
+     mov r0,#00001101b
+     mov r1,#00001101b
+     mov r2,#00001101b
+     mov r3,#00001101b
+     mov r4,#00001101b
+     mov r5,#00001101b
+     mov r6,#00001101b
+     mov r7,#00001101b
+     mov p0,#00h
+     mov p1,#ffh 
+loop setb p1.4
+     clr  p1.5
+     jnb p1.3,nd
+     jnb p1.2,n6
+     jnb p1.1,n5
+     jnb p1.0,n4
+     setb p1.5
+     clr  p1.4
+     jnb p1.3,nc
+     jnb p1.2,n9
+     jnb p1.1,n8
+     jnb p1.0,n7
+     jmp loop
+
+n0   mov b,#00000000b     
+     jmp @a+dptr
+n1   mov b,#00000001b
+     jmp @a+dptr   
+n2   mov b,#00000010b
+     jmp @a+dptr   
+n3   mov b,#00000011b   
+     jmp @a+dptr
+n4   mov b,#00000100b  
+     jmp @a+dptr
+n5   mov b,#00000101b
+     jmp @a+dptr
+n6   mov b,#00000110b
+     jmp @a+dptr
+n7   cjne a,#7,pp
+     clr a
+     jmp loop
+pp   inc a
+     jmp loop
+n8   mov b,#00001000b
+     jmp @a+dptr
+n9   mov b,#00001001b
+     jmp @a+dptr
+na   mov b,#00001010b
+     jmp @a+dptr
+nb   mov b,#00001011b
+     jmp @a+dptr
+nc   clr a
+     jmp loop
+nd   mov b,#00001101b
+     jmp @a+dptr
+ne   mov b,#00001110b
+     jmp @a+dptr
+nf   mov b,#00001111b
+     jmp @a+dptr
+
+test0 mov p0,#00000010b
+      push a
+      mov a,r0     
+      cjne a,b,error
+      pop a
+      jmp loop
+                                                                      
+test1 mov p0,#00000100b
+      push a
+      mov a,r1
+      cjne a,b,error
+      pop a
+      jmp loop
+
+test2 mov p0,#00000110b
+      push a 
+      mov a,r2
+      cjne a,b,error
+      pop a
+      jmp loop
+
+test3 mov p0,#00001000b
+      push a 
+      mov a,r3
+      cjne a,b,error
+      pop a
+      jmp loop
+     
+test4 mov p0,#00001010b
+      push a 
+      mov a,r4
+      cjne a,b,error
+      pop a
+      jmp loop
+
+test5 mov p0,#00001100b
+      push a 
+      mov a,r5
+      cjne a,b,error
+      pop a
+      jmp loop
+
+test6 mov p0,#00001110b
+      push a 
+      mov a,r6 
+      cjne a,b,error
+      pop a
+      jmp loop
+
+test7 mov p0,#00010000b
+      push a
+      mov a,r7
+      cjne a,b,error
+      pop a
+      clr a
+      setb p0.0
+      call delay
+      clr p0.0
+      jmp loop
+    
+error pop a
+      clr a
+      jmp loop
+
+
+delay mov r1,#8h
+dly3  mov r2,#ffh
+dly2  mov r3,#ffh        
+dly1  djnz r3,dly1
+      djnz r2,dly2
+      djnz r1,dly3
+      ret
+table: jmp test0
+       jmp test1
+       jmp test2
+       jmp test3
+       jmp test4
+       jmp test5
+       jmp test6
+       jmp test7                    
+       end 
